@@ -1,0 +1,38 @@
+server:
+  port: 81
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url:
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  devtools:
+    livereload:
+      port: 35731
+
+
+  redis:
+    port: 6379
+    host:
+    database: 0
+    password:
+
+
+
+takeout:
+  token:
+    prefix: 'bearer'
+    secret: '4512'
+    expireTime: 360000000   #token ms
+
+mybatis-plus:
+  type-aliases-package: my.asoul.chat_service.entity
+  configuration:
+    map-underscore-to-camel-case: true
+
+rocketmq:
+  name-server:
+
+

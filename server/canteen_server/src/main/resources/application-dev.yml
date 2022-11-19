@@ -1,0 +1,60 @@
+server:
+  port: 80
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url:
+  # Redis
+  redis:
+    port: 6379
+    host:
+    database: 0
+    password:
+  # cache
+  cache:
+    redis:
+      time-to-live: 180000000000000
+    type: redis
+  #------spring-settings-------
+  main:
+    allow-bean-definition-overriding: true
+  #-------spring-mail----------
+  mail:
+    host: smtp.qq.com
+    username:
+    password:
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+        starttls:
+          enable: true
+          required: true
+    port: 587
+    protocol: smtp
+# MP
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: assign_id
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  type-aliases-package: my.asoul.takeout.model
+
+# personal-settings
+takeout:
+  mail:
+    sender: '@qq.com'
+  token:
+    prefix: 'bearer'
+    secret: '4512'
+    expireTime: 360000000   #token过期时间 ms
+  app:
+    appid:
+    secret:

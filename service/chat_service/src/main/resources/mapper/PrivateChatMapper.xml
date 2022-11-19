@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="my.asoul.chat_service.mapper.PrivateChatMapper">
+
+    <select id="getChatListById" resultMap="privateChatDTOMap">
+        select receive_user_id,
+               session_id,
+               unread_count,
+               db_user.name   as name,
+               db_user.avatar as avatar
+        from private_chat
+                 LEFT JOIN db_canteen_sys.user as db_user ON private_chat.receive_user_id = db_user.id
+        where send_user_id = #{userId};
+    </select>
+
+    <resultMap id="privateChatDTOMap" type="PrivateChatDTO">
+        <result property="sessionId" column="session_id"/>
+        <result property="unreadCount" column="unread_count"/>
+        <association property="user" javaType="my.asoul.takeout.model.user.User">
+            <result property="avatar" column="avatar"/>
+            <result property="id" column="receive_user_id"/>
+            <result property="name" column="name"/>
+        </association>
+    </resultMap>
+
+    <select id="getChatRecord" resultMap="privateChatRecord">
+        select receive_user_id, content, session_id, send_time,send_user_id
+        from private_chat_record
+        where session_id = #{sessionId};
+    </select>
+    <resultMap id="privateChatRecord" type="PrivateChatRecord">
+        <result property="content" column="content"/>
+        <result property="sessionId" column="session_id"/>
+        <result property="sendTime" column="send_time"/>
+        <association property="user" javaType="my.asoul.takeout.model.user.User">
+            <result property="id" column="send_user_id"/>
+        </association>
+    </resultMap>
+
+    <insert id="savePrivateChatRecord" parameterType="my.asoul.chat_service.entity.protocol.Message">
+        insert into private_chat_record (id, send_user_id, receive_user_id, content, session_id)
+        values (#{id}, #{user.id}, #{receiveUserId}, #{content}, #{sessionId});
+    </insert>
+
+    <insert id="savePrivateChat" parameterType="my.asoul.chat_service.entity.protocol.Message">
+        insert into private_chat (id, send_user_id, receive_user_id, session_id, unread_count)
+        values (#{id}, #{user.id}, #{receiveUserId}, #{sessionId}, 1);
+        insert into private_chat (id, send_user_id, receive_user_id, session_id, unread_count)
+        values (#{id}+1, #{receiveUserId}, #{user.id}, #{sessionId}, 0);
+    </insert>
+
+    <update id="updatePrivateChatUnreadCount" parameterType="my.asoul.chat_service.entity.protocol.Message">
+        update private_chat
+        set unread_count = unread_count + 1
+        where receive_user_id = #{receiveUserId}
+          AND session_id = #{sessionId}
+    </update>
+</mapper>
