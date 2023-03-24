@@ -60,9 +60,8 @@
 # 项目结构
 ```
 ├── model                   // model层  
-│   └── ss
 ├── server                  
-│   ├── canteen_server      // 餐厅后台服务器
+│   ├── canteen_server      // 餐厅后台服务器与业务
 │   ├── chat_server         // 即时通讯服务器
 ├── service
 │   ├── chat_service        // 聊天业务
@@ -77,6 +76,6 @@
 - 配置RocketMQ
 - 配置邮箱密钥
 - 配置小程序id与密钥
-- 运行后台服务器
+- 运行餐厅后台服务器
 - 运行通讯服务器
-- 运行聊天业务项目
+- 运行聊天后台服务器
